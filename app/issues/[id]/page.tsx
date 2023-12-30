@@ -15,6 +15,7 @@ const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
   })
 
   if (!issue) notFound()
+  // The delay allow us to simulate slow connection for showing up te loading component
   await delay(2000)
   return (
     <div>
@@ -23,7 +24,7 @@ const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>
       </Flex>
-      <Card className="prose lg:prose-xl" mt={"4"}>
+      <Card className="prose" mt={"4"}>
         <ReactMarkdown>{issue.description}</ReactMarkdown>
       </Card>
     </div>

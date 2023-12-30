@@ -31,7 +31,6 @@ const LoadingIssuesPage = () => {
                   <Skeleton />
                 </div>
               </Table.Cell>
-
               <Table.Cell className="hidden md:table-cell">
                 <Skeleton />
               </Table.Cell>
