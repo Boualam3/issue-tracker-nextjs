@@ -11,8 +11,7 @@ import { AiFillInfoCircle } from "react-icons/ai"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createIssueSchema } from "@/app/validationSchemas"
 import { z } from "zod"
-import ErrorMessage from "@/app/components/ErrorMessage"
-import Spinner from "@/app/components/Spinner"
+import { ErrorMessage, Spinner } from "@/app/components"
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,

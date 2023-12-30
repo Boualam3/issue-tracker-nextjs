@@ -1,10 +1,8 @@
 import { Box, Card, Flex, Heading, Text } from "@radix-ui/themes"
-import React from "react"
-import Skeleton from "react-loading-skeleton"
-import "react-loading-skeleton/dist/skeleton.css"
 
-// ?================================================
-const LoadingIssueDetailPage = () => {
+import { Skeleton } from "@/app/components"
+// ?======================================
+export default function LoadingIssueDetailPage() {
   return (
     <Box>
       <Skeleton />
@@ -18,5 +16,3 @@ const LoadingIssueDetailPage = () => {
     </Box>
   )
 }
-
-export default LoadingIssueDetailPage
