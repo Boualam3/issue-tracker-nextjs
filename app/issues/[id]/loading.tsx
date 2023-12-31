@@ -1,6 +1,6 @@
 import { Box, Card, Flex, Heading, Text } from "@radix-ui/themes"
 
-import { Skeleton } from "@/app/components"
+import { Skeleton } from "@/app/_components"
 // ?======================================
 export default function LoadingIssueDetailPage() {
   return (

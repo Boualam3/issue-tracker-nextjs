@@ -2,7 +2,7 @@ import prisma from "@/prisma/client"
 import { Issue } from "@prisma/client"
 import { Table } from "@radix-ui/themes"
 
-import { IssueStatusBadge, Link } from "@/app/components"
+import { IssueStatusBadge, Link } from "@/app/_components"
 import delay from "delay"
 import IssueActions from "./IssueActions"
 // import axios from "axios"

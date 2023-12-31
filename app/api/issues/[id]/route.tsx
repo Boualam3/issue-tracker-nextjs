@@ -23,4 +23,5 @@ export async function PATCH(
       description: body.description,
     },
   })
+  return NextResponse.json({ status: 200 })
 }
