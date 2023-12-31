@@ -6,3 +6,6 @@ curl -X POST -H "Content-Type: application/json" -d '{"title":"issue title","des
 
 # for update issue
 curl -X PATCH -H "Content-Type: application/json" -d '{"title":"title updated","description":"desc"}' $API_BASE_URL/api/issues/1
+
+# Update the base URL if needed:
+export API_BASE_URL=http://new-url:port
