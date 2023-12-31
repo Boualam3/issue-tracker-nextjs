@@ -53,4 +53,7 @@ const IssuesPage = async () => {
 
 export const dynamic = "force-dynamic"
 
+// we telling nextjs the output of this page has to be revalidate every 0s of time (all the time)
+// export const revalidate = 0
+
 export default IssuesPage
