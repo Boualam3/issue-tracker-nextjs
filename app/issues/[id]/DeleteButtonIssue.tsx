@@ -3,7 +3,7 @@ import { Spinner } from "@/app/_components"
 import { TrashIcon } from "@radix-ui/react-icons"
 import { AlertDialog, Button, Flex } from "@radix-ui/themes"
 import axios from "axios"
-import { error } from "console"
+
 import { useRouter } from "next/navigation"
 
 import React, { useState } from "react"
@@ -29,7 +29,7 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
         setDeleting(false)
       }
 
-      router.push("/issues")
+      router.push("/issues/list")
       // issues get cached by nextjs so here we refresh for refresh issues data
       router.refresh()
       console.log("response: ", res)

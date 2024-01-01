@@ -9,7 +9,7 @@ import classnames from "classnames"
 const NavBar = () => {
   const currentPathname = usePathname()
   const links = [
-    { href: "/issues", label: "Issues" },
+    { href: "/issues/list", label: "Issues" },
     { href: "/dashboard", label: "Dashboard" },
   ]
   return (
