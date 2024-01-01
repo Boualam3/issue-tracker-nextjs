@@ -1,4 +1,5 @@
 import { issueSchema } from "@/app/validationSchemas"
+import delay from "delay"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function PATCH(
@@ -30,6 +31,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // await delay(2000) simulate slow backend
   const issueID = parseInt(params.id)
   if (!issueID)
     return NextResponse.json({ error: "Invalid issue ID" }, { status: 400 })

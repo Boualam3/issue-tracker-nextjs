@@ -1,4 +1,5 @@
 "use client"
+import { Spinner } from "@/app/_components"
 import { TrashIcon } from "@radix-ui/react-icons"
 import { AlertDialog, Button, Flex } from "@radix-ui/themes"
 import axios from "axios"
@@ -9,16 +10,25 @@ import React, { useState } from "react"
 
 const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
   const [error, setError] = useState(false)
+  const [isDeleting, setDeleting] = useState(false)
   const router = useRouter()
 
   const deleteIssueHandler = async () => {
     try {
+      setDeleting(true)
       const res = await axios.delete(`/api/issues/${issueId}`, {
         data: {
           id: issueId,
         },
       })
-      if (res.status !== 200) setError(true)
+
+      if (res.status === 200) {
+        setDeleting(false)
+      } else {
+        setError(true)
+        setDeleting(false)
+      }
+
       router.push("/issues")
       // issues get cached by nextjs so here we refresh for refresh issues data
       router.refresh()
@@ -26,15 +36,17 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
     } catch (error) {
       setError(true)
       console.log(error)
+      setDeleting(false)
     }
   }
   return (
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button color="red">
+          <Button color="red" disabled={isDeleting}>
             <TrashIcon />
             Delete Issue
+            {isDeleting && <Spinner />}
           </Button>
         </AlertDialog.Trigger>
         <AlertDialog.Content>
