@@ -2,10 +2,15 @@
 import { TrashIcon } from "@radix-ui/react-icons"
 import { AlertDialog, Button, Flex } from "@radix-ui/themes"
 import axios from "axios"
+import { error } from "console"
+import { useRouter } from "next/navigation"
 
-import React from "react"
+import React, { useState } from "react"
 
 const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
+  const [error, setError] = useState(false)
+  const router = useRouter()
+
   const deleteIssueHandler = async () => {
     try {
       const res = await axios.delete(`/api/issues/${issueId}`, {
@@ -13,8 +18,13 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
           id: issueId,
         },
       })
+      if (res.status !== 200) setError(true)
+      router.push("/issues")
+      // issues get cached by nextjs so here we refresh for refresh issues data
+      router.refresh()
       console.log("response: ", res)
     } catch (error) {
+      setError(true)
       console.log(error)
     }
   }
@@ -46,6 +56,24 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
               </Button>
             </AlertDialog.Cancel>
           </Flex>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
+
+      <AlertDialog.Root open={error}>
+        <AlertDialog.Content>
+          <AlertDialog.Title>Error</AlertDialog.Title>
+          <AlertDialog.Description>
+            This issue could not be deleted. Try again
+          </AlertDialog.Description>
+
+          <Button
+            onClick={() => setError(false)}
+            color="gray"
+            variant="soft"
+            mt="2"
+          >
+            OK
+          </Button>
         </AlertDialog.Content>
       </AlertDialog.Root>
     </>
