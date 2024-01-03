@@ -19,7 +19,7 @@ import {
   Avatar,
   Text,
 } from "@radix-ui/themes"
-import { Spinner } from "./_components"
+import { Skeleton, Spinner } from "./_components"
 
 const NavBar = () => {
   return (
@@ -69,7 +69,7 @@ function NavLinks() {
 
 function AuthStatus() {
   const { status, data: session } = useSession()
-  if (status === "loading") return <Spinner />
+  if (status === "loading") return <Skeleton width="3rem" />
   if (status === "authenticated") {
     return (
       <Box>
