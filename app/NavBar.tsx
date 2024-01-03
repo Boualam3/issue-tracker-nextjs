@@ -11,7 +11,14 @@ import classnames from "classnames"
 
 import { useSession } from "next-auth/react"
 
-import { Box, Flex, Container } from "@radix-ui/themes"
+import {
+  Box,
+  Flex,
+  Container,
+  DropdownMenu,
+  Avatar,
+  Text,
+} from "@radix-ui/themes"
 import { Spinner } from "./_components"
 
 const NavBar = () => {
@@ -48,7 +55,27 @@ const NavBar = () => {
           </Flex>
           <Box>
             {status === "authenticated" && (
-              <Link href="/api/auth/signout">Log out</Link>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Avatar
+                    src={session.user!.image!}
+                    fallback="?"
+                    size="2"
+                    radius="full"
+                    className="cursor-pointer"
+                  />
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Label>
+                    <Text size="2">{session.user?.email}</Text>
+                  </DropdownMenu.Label>
+                  <DropdownMenu.Item>
+                    <Text size="2">
+                      <Link href="/api/auth/signout">Log out</Link>
+                    </Text>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             )}
             {status === "loading" && <Spinner />}
             {status === "unauthenticated" && (
