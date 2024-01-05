@@ -1,14 +1,9 @@
 "use client"
 import React from "react"
-
 import { AiFillBug } from "react-icons/ai"
-
 import Link from "next/link"
-
 import { usePathname } from "next/navigation"
-
 import classnames from "classnames"
-
 import { useSession } from "next-auth/react"
 
 import {
@@ -81,6 +76,7 @@ function AuthStatus() {
               size="2"
               radius="full"
               className="cursor-pointer"
+              referrerPolicy="no-referrer"
             />
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>

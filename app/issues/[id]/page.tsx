@@ -6,8 +6,16 @@ import { notFound } from "next/navigation"
 import EditIssueButton from "./EditIssueButton"
 import DeleteIssueButton from "./DeleteButtonIssue"
 import IssueDetails from "./IssueDetails"
+import { getServerSession } from "next-auth"
+import authOptions from "@/app/auth/authOptions"
+import AssigneeSelect from "./AssigneeSelect"
 
-const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
+export default async function IssueDetailPage({
+  params,
+}: {
+  params: { id: string }
+}) {
+  const session = await getServerSession(authOptions)
   const issueId = parseInt(params.id)
   if (!issueId) notFound()
 
@@ -23,14 +31,15 @@ const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
       <Box className="lg:col-span-4">
         <IssueDetails issue={issue} />
       </Box>
-      <Box>
-        <Flex className="flex-col md:justify-between md:flex-row lg:flex-col gap-3">
-          <EditIssueButton issueId={issueId} />
-          <DeleteIssueButton issueId={issueId} />
-        </Flex>
-      </Box>
+      {session && (
+        <Box>
+          <Flex className="flex-col md:justify-between md:flex-row lg:flex-col gap-3">
+            <AssigneeSelect />
+            <EditIssueButton issueId={issueId} />
+            <DeleteIssueButton issueId={issueId} />
+          </Flex>
+        </Box>
+      )}
     </Grid>
   )
 }
-
-export default IssueDetailPage
