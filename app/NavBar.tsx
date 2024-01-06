@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import { AiFillBug } from "react-icons/ai"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -15,6 +15,7 @@ import {
   Text,
 } from "@radix-ui/themes"
 import { Skeleton, Spinner } from "./_components"
+import { data } from "autoprefixer"
 
 const NavBar = () => {
   return (
@@ -64,15 +65,19 @@ function NavLinks() {
 
 function AuthStatus() {
   const { status, data: session } = useSession()
+  useEffect(() => {
+    console.log("status ", status)
+  }, [status])
   if (status === "loading") return <Skeleton width="3rem" />
+
   if (status === "authenticated") {
     return (
       <Box>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <Avatar
-              src={session.user!.image!}
-              fallback="?"
+              src={session.user?.image || "/profile-icon.png"}
+              fallback=""
               size="2"
               radius="full"
               className="cursor-pointer"

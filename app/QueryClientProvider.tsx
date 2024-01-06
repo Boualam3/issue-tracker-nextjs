@@ -9,7 +9,9 @@ const queryClient = new QueryClient()
 
 function QueryClientProvider({ children }: PropsWithChildren) {
   return (
-    <ReactQueryClientProvider client={queryClient}></ReactQueryClientProvider>
+    <ReactQueryClientProvider client={queryClient}>
+      {children}
+    </ReactQueryClientProvider>
   )
 }
 
