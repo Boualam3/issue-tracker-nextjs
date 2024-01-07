@@ -16,10 +16,11 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   } = useQuery<User[]>({
     queryKey: ["users"],
     queryFn: () => axios.get("/api/users").then(({ data }) => data),
-    staleTime: 60 * 1000, //60s
+    staleTime: 60 * 60 * 1000, //1hour
     retry: 3,
   })
-  const updateIssueAssignedToUserHandler = (userId: string) => {
+
+  const assignIssueHandler = (userId: string) => {
     axios
       .patch("/api/issues/" + issue.id, {
         assignedToUserId: userId && userId !== "null" ? userId : null,
@@ -43,7 +44,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
       <Toaster />
       <Select.Root
         defaultValue={issue.assignedToUserId || "null"}
-        onValueChange={(userId) => updateIssueAssignedToUserHandler(userId)}
+        onValueChange={assignIssueHandler}
       >
         <Select.Trigger aria-placeholder="Assign..." />
         <Select.Content>
