@@ -34,7 +34,7 @@ export default async function IssueDetailPage({
       {session && (
         <Box>
           <Flex className="flex-col md:justify-between md:flex-row lg:flex-col gap-3">
-            <AssigneeSelect />
+            <AssigneeSelect issue={issue} />
             <EditIssueButton issueId={issueId} />
             <DeleteIssueButton issueId={issueId} />
           </Flex>

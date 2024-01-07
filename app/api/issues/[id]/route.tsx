@@ -1,5 +1,5 @@
 import authOptions from "@/app/auth/authOptions"
-import { issueSchema } from "@/app/validationSchemas"
+import { issueSchema, patchIssueSchema } from "@/app/validationSchemas"
 import delay from "delay"
 import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
@@ -11,7 +11,7 @@ export async function PATCH(
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({}, { status: 401 })
   const body = await request.json()
-  const validations = issueSchema.safeParse(body)
+  const validations = patchIssueSchema.safeParse(body)
   if (!validations.success)
     return NextResponse.json(validations.error.format(), { status: 400 })
 
@@ -20,12 +20,20 @@ export async function PATCH(
   })
   if (!issue)
     return NextResponse.json({ error: "Invalid identifier" }, { status: 404 })
-
+  const { title, description, assignedToUserId } = body
+  if (assignedToUserId) {
+    const user = await prisma?.user.findUnique({
+      where: { id: assignedToUserId },
+    })
+    if (!user)
+      return NextResponse.json({ error: "Invalid user id" }, { status: 404 })
+  }
   await prisma?.issue.update({
     where: { id: issue.id },
     data: {
-      title: body.title,
-      description: body.description,
+      title,
+      description,
+      assignedToUserId,
     },
   })
   return NextResponse.json({ status: 200 })
