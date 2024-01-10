@@ -1,9 +1,10 @@
 "use client"
 import { Status } from "@prisma/client"
 import { Select } from "@radix-ui/themes"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 Status
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { set } from "zod"
 
 const statuses: { label: string; value?: Status }[] = [
   { label: "All" },
@@ -14,22 +15,26 @@ const statuses: { label: string; value?: Status }[] = [
 
 const IssueStatusFilter = () => {
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
   return (
     <Select.Root
       defaultValue="undefined"
       onValueChange={(status: string) => {
-        const validStatus: Status | "undefined" =
-          status &&
-          (Object.values(Status) as Status[]).includes(status as Status)
-            ? (status as Status)
-            : "undefined"
+        const params = new URLSearchParams()
+        if (status) params.append("status", status)
 
-        const urlWithQuery =
-          validStatus !== "undefined"
-            ? `/issues/list?status=${validStatus}`
-            : "/issues/list"
+        if (searchParams.get("orderBy"))
+          params.append("orderBy", searchParams.get("orderBy")!)
+        if (searchParams.get("order"))
+          params.append("order", searchParams.get("order")!)
+
+        const Query = params.size ? "?" + params.toString() : ""
+
         // console.log(url)
-        router.push(urlWithQuery)
+        router.push("/issues/list" + Query)
+        router.refresh()
       }}
     >
       <Select.Trigger />

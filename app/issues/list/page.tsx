@@ -39,21 +39,22 @@ async function IssuesPage({ searchParams }: Props) {
     ? searchParams.status
     : undefined
 
-  const orderByArray = columns.map(({ value }) => value)
-  const orderByKey = orderByArray.includes(searchParams.orderBy)
+  const orderByKey = columns
+    .map(({ value }) => value)
+    .includes(searchParams.orderBy)
     ? searchParams.orderBy
     : undefined
   // we need this logic when we use both sort orders in SortColumns client side component
   const order = ["asc", "desc"].includes(searchParams.order)
     ? searchParams.order
     : undefined
-  console.log(
-    "current order : ",
-    orderByKey ? { [orderByKey]: order || "asc" } : {}
-  )
+  // console.log(
+  //   "current order : ",
+  //   orderByKey ? { [orderByKey]: order || "asc" } : {}
+  // )
   let issues: Issue[] = await prisma.issue.findMany({
     where: { status: status },
-    orderBy: orderByKey ? { [orderByKey]: order || "asc" } : {},
+    orderBy: orderByKey ? { [orderByKey]: order } : {},
   })
 
   // await delay(2000)
