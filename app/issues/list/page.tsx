@@ -7,17 +7,23 @@ import delay from "delay"
 import IssueActions from "./IssueActions"
 import { ArrowUpIcon } from "@radix-ui/react-icons"
 import SortColumns from "./SortColumns"
+import Pagination from "@/app/_components/Pagination"
 // import axios from "axios"
 type Props = {
-  searchParams: { status: Status; orderBy: keyof Issue; order: "asc" | "desc" }
+  searchParams: {
+    status: Status
+    orderBy: keyof Issue
+    order: "asc" | "desc"
+    page: string
+  }
 }
-
-const columns: {
+interface Columns {
   label: string
   value: keyof Issue
   query: string
   className?: string
-}[] = [
+}
+const columns: Columns[] = [
   { label: "Issue", value: "title", query: "orderBy" },
   {
     label: "Status",
@@ -38,26 +44,31 @@ async function IssuesPage({ searchParams }: Props) {
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined
-
-  const orderByKey = columns
-    .map(({ value }) => value)
-    .includes(searchParams.orderBy)
-    ? searchParams.orderBy
-    : undefined
+  const where = { status: status }
   // we need this logic when we use both sort orders in SortColumns client side component
   const order = ["asc", "desc"].includes(searchParams.order)
     ? searchParams.order
+    : "asc" // default order
+  const orderBy = columns
+    .map(({ value }) => value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: order }
     : undefined
-  // console.log(
-  //   "current order : ",
-  //   orderByKey ? { [orderByKey]: order || "asc" } : {}
-  // )
-  let issues: Issue[] = await prisma.issue.findMany({
-    where: { status: status },
-    orderBy: orderByKey ? { [orderByKey]: order } : {},
-  })
 
-  // await delay(2000)
+  const page = parseInt(searchParams.page) || 1
+  const pageSize = 10
+
+  let issues: Issue[] = await prisma.issue.findMany({
+    // filtering
+    where,
+    // sorting
+    orderBy,
+    // paginate
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  })
+  const issueCount = await prisma.issue.count({ where })
+  // await delay(2000) simulate slow back-end process
   return (
     <div>
       <IssueActions />
@@ -110,6 +121,11 @@ async function IssuesPage({ searchParams }: Props) {
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        pageSize={pageSize}
+        currentPage={page}
+        itemCount={issueCount}
+      />
     </div>
   )
 }
