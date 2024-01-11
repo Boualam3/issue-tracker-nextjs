@@ -26,13 +26,13 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
   const changePageHandler = (page: number) => {
     // getting current query params
     const params = new URLSearchParams(searchParams)
-    console.log(params)
+
     params.set("page", page.toString())
     router.push("?" + params.toString())
   }
 
   return (
-    <Flex align="center" gap="2">
+    <Flex align="center" justify="center" gap="2">
       <Button
         color="gray"
         variant="soft"
@@ -58,7 +58,7 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
       <Button
         color="gray"
         variant="soft"
-        disabled={currentPage === pageSize}
+        disabled={currentPage === pageCount}
         onClick={() => changePageHandler(currentPage + 1)}
       >
         <ChevronRightIcon />
@@ -67,7 +67,7 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
       <Button
         color="gray"
         variant="soft"
-        disabled={currentPage === pageSize}
+        disabled={currentPage === pageCount}
         onClick={() => changePageHandler(pageCount)}
       >
         <DoubleArrowRightIcon />
