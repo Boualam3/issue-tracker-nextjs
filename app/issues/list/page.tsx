@@ -5,6 +5,7 @@ import IssueActions from "./IssueActions"
 import Pagination from "@/app/_components/Pagination"
 import IssueTable, { SearchParams, columnNames } from "./IssueTable"
 import { Flex } from "@radix-ui/themes"
+import { Metadata } from "next"
 
 type Props = {
   searchParams: SearchParams
@@ -55,5 +56,10 @@ export const dynamic = "force-dynamic"
 
 // we telling nextjs the output of this page has to be revalidate every 0s of time (all the time)
 // export const revalidate = 0
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - Issue List",
+  description: " View  all  project issues",
+}
 
 export default IssuesPage
